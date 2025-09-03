@@ -31,23 +31,11 @@ Conversion error: Jekyll::Converters::Scss encountered an error while converting
 - 원격(GitHub Actions) 빌드 과정에서 npm 의존성 설치 및 빌드 단계가 빠지면, Jekyll이 참조해야 할 전처리 산출물이 비어있어 SCSS 변환 단계에서 오류가 날 수 있다.
 - 로컬에서도 기존 산출물/의존성 상태가 애매하게 꼬여 있으면 비슷한 증상이 재현된다.
 
-관련 논의: `https://github.com/cotes2020/jekyll-theme-chirpy/discussions/1809`
+관련 논의: <https://github.com/cotes2020/jekyll-theme-chirpy/discussions/1809>
 
 ## 최종 해결
 
 GitHub Actions 워크플로에서 Jekyll 빌드 전에 npm 설치/빌드 단계를 추가하니 해결됐다. 나는 `.github/workflows/jekyll.yml`의 Ruby 설정 전에 다음 스텝을 넣었다.
-
-```yaml
-- name: Setup Node
-  uses: actions/setup-node@v4
-  with:
-    node-version: '20'
-
-- name: Install and build (npm)
-  run: npm install && npm run build
-```
-
-최소한으로는 아래 한 스텝만 추가해도(러너에 Node가 이미 있는 경우) 빌드가 통과했다.
 
 ```yaml
 - name: Install and build (npm)
@@ -58,12 +46,6 @@ GitHub Actions 워크플로에서 Jekyll 빌드 전에 npm 설치/빌드 단계�
 
 - Chirpy는 Rollup 등으로 번들링된 자산을 사용한다. 원격 빌드에서 이 과정을 건너뛰면, 테마가 기대하는 CSS/JS 파일이 생성되지 않아 Jekyll의 SCSS 변환기가 중간에 실패한다.
 - `bundle lock --add-platform x86_64-linux`는 GitHub Actions의 리눅스 환경에서 루비 젬 호환성 문제를 줄여주지만, 근본적으로 자산 빌드 누락 문제는 해결하지 못한다.
-
-## 체크리스트(다시 이슈 나면)
-
-- GitHub Actions 워크플로에 npm 설치/빌드 스텝이 있는가?
-- Node 버전이 적절한가(예: 18 이상 권장, 나는 20 사용)?
-- 로컬에서는 `npm ci && npm run build` 후 `bundle exec jekyll serve`가 정상 동작하는가?
 
 ## 회고
 
