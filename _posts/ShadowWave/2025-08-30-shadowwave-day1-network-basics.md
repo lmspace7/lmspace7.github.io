@@ -16,37 +16,58 @@ FishNet 공식문서의 튜토리얼 학습
 ### 1. 권한, 함수
 
 ```csharp
-// 로컬 플레이어가 Owner인지 확인
-if (IsOwner)
-{
-    // Owner인 경우 실행
-}
-
-// 서버인지 확인
-if (IsServer)
+// 서버/클라이언트 시작 여부 확인
+if (IsServerStarted)
 {
     // 서버 전용 코드 실행
 }
 
-// 클라이언트인지 확인
-if (IsClient)
+if (IsClientStarted)
 {
     // 클라이언트 전용 코드 실행
 }
-````
 
-다른 네트워크 엔진과 마찬가지로 권한과 주인에 대한 개념이 나타난다.
+// 서버/클라이언트 초기화 여부 확인
+if (IsServerInitialized)
+{
+    // 서버 초기화 이후 로직
+}
+
+if (IsClientInitialized)
+{
+    // 클라이언트 초기화 이후 로직
+}
+```
+
+```csharp
+[Server]
+private void RecalculateScores()
+{
+    // 서버에서만 실행
+}
+
+[Client]
+private void UpdateHUD()
+{
+    // 클라이언트에서만 실행
+}
+```
 
 * `IsOwner`  : 현재 로컬 플레이어가 오브젝트의 소유자인지 확인
-* `IsServer` : 현재 코드가 서버에서 실행되는지 확인
-* `IsClient` : 현재 코드가 클라이언트에서 실행되는지 확인
+* `IsServerStarted` : 서버가 시작되었는지 확인
+* `IsClientStarted` : 클라이언트가 시작되었는지 확인
+* `IsServerInitialized` : 서버 역할의 오브젝트가 초기화되었는지 확인
+* `IsClientInitialized` : 클라이언트 역할의 오브젝트가 초기화되었는지 확인
+* `[Server]` / `[Client]` : 각각 서버/클라이언트에서만 실행되도록 제한
 
-
-좀 색다른 경험을 했던 부분은 아예 네트워크 시작 신호에 대해서 OnStartServer / OnStartClient / OnStartNetwork 3가지 함수를 제공한다는 것이었다.
 
 * `OnStartServer()` : 서버에서만 호출
 * `OnStartClient()` : 클라이언트에서만 호출
 * `OnStartNetwork()` : 서버/클라이언트 모두에서 네트워크 오브젝트가 활성화될 때 호출
+
+좀 색다른 경험을 했던 부분은 아예 네트워크 시작 신호에 대해서 OnStartServer / OnStartClient / OnStartNetwork 3가지 함수를 제공한다는 것이었다.
+
+여기에 더해, 개인적으로는 보통 하나의 스폰/초기화 함수에서 실행 환경을 분기하던 익숙한 방식과 달리, 실행 환경에 따라 메서드를 아예 분리하는 접근이 신선했다. `[Server]`, `[Client]`로 명확히 제한할 수 있고, Pro 버전에서는 해당 환경이 아닌 코드는 빌드에서 자동 제외되어 최적화 이점도 있다. 나중에 프로젝트에서도 잘 활용해보고 싶다.
 
 ### 2. RPC
 

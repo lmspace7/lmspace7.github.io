@@ -59,7 +59,7 @@ private void RPC_RequestSetState(E_EnemyState nextState)
 
 EnemyFSM은 플레이어 FSM과 비슷하게 상태를 컴포넌트로 쪼개서 딕셔너리에 등록했고, 전이는 항상 `Exit → Set → Enter` 순서를 지켰다. 상태 동기화는 `SyncEnum<T>`로 처리했다.
 
-다만 적 FSM은 설계 철학을 다르게 가져가서, 주요 로직을 전부 서버에만 올렸다. 
+다만 적 FSM은 설계 철학을 다르게 가져가서, 주요 로직을 전부 서버에서 돌아가게했다.
 
 `Tick/FixedTick`, 플레이어 탐지, 순찰/추격 판단 같은 결정은 서버에서만 돌리고, 클라이언트는 동기화된 상태 값과 애니메이션만 받아서 재생한다. AI의 결정권을 서버로 모아두니 예측 불일치나 치트 리스크를 꽤 줄일 수 있었다.
 
@@ -71,26 +71,8 @@ EnemyFSM은 플레이어 FSM과 비슷하게 상태를 컴포넌트로 쪼개서
 
 핵심은 상태 변경의 최종 권한은 항상 서버에 있고, 클라는 ‘요청’과 ‘재생’에 집중한다는 점이다.
 
-### 2) EnemyController + EnemyContext
+### 2) EnemyController + EnemyContext / Context 도입(Enemy/Player)
 
-- 컨텍스트에 `Rigidbody / NetworkAnimator / CapsuleCollider / EnemyFSM / EnemyStats / UI_Enemy`를 묶고 `ValidateComponents()`로 필수성 보장.
-- `OnStartServer()`에서만 초기화/초기 상태 전이를 수행하고, `Update/FixedUpdate`도 서버에서만 Tick.
-
-```csharp
-public override void OnStartServer()
-{
-    if (_context.ValidateComponents() == false)
-    {
-        return;
-    }
-
-    _isInit = true;
-    _context.FSM.OnInit(this, _context);
-    _context.FSM.SetState(E_EnemyState.Idle);
-}
-```
-
-### 2-3) Context 도입(Enemy/Player)
 
 4일차에는 `EnemyContext`와 `PlayerContext`를 새로 도입했다. 그전까지는 FSM이나 상태에서 필요한 컴포넌트를 직접 찾는 방식이었는데, 컨텍스트로 묶어두니 초기화와 검증이 한 번에 끝나고, 상태 쪽에서는 오너와 컨텍스트만 받아서 의존성을 깔끔하게 쓸 수 있었다. 결과적으로 상태 코드가 더 읽기 쉬워졌고, 네트워크 애니메이터나 스탯처럼 공통으로 참조하는 것들의 접근이 일관됐다.
 
@@ -121,6 +103,24 @@ public override void EnterState()
 {
     if (_context.ValidateComponents() == false)
         return;
+}
+```
+
+
+- 컨텍스트에 `Rigidbody / NetworkAnimator / CapsuleCollider / EnemyFSM / EnemyStats / UI_Enemy`를 묶고 `ValidateComponents()`로 필수성 보장.
+- `OnStartServer()`에서만 초기화/초기 상태 전이를 수행하고, `Update/FixedUpdate`도 서버에서만 Tick.
+
+```csharp
+public override void OnStartServer()
+{
+    if (_context.ValidateComponents() == false)
+    {
+        return;
+    }
+
+    _isInit = true;
+    _context.FSM.OnInit(this, _context);
+    _context.FSM.SetState(E_EnemyState.Idle);
 }
 ```
 
