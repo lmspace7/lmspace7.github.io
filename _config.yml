@@ -48,6 +48,7 @@ webmaster_verifications:
   yandex: # Yandex 소유권 확인 코드
   baidu: # Baidu 소유권 확인 코드
   facebook: # Facebook 소유권 확인 코드
+  naver: "5e6e3ba6348b1f01c1097b8e7977d6cd05b6f546"
 
 # ↑ --------------------------
 # `jekyll-seo-tag` 설정 끝
