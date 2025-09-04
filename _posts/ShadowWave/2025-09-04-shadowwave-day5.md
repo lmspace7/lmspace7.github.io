@@ -1,6 +1,6 @@
 ---
 title: ShadowWave 개발일지 5일차
-description: 무기 파이프라인(SO/프리팹/리코더), 장착 로직, 에디터 툴, 서버 스폰 정리
+description: 무기 파이프라인(SO/프리팹/리코더), 장착 로직, 에디터 툴(Odin), 서버 스폰 정리
 date: 2025-09-04 17:58:00 +0900
 categories: [개발일지, 게임개발]
 tags: [Unity, FishNet, 무기, ScriptableObject, OdinInspector, 에디터툴]
@@ -27,7 +27,7 @@ pin: false
 - 프리팹에 `WeaponPresenter`/`WeaponRecorder`가 누락되었거나 다른 SO에 연결되어 있으면, 에디터 버튼으로 즉시 정합성을 맞춘다.
 
 ```csharp
-// 프리팹 링크 초기화 버튼(요약)
+// 프리팹 링크 초기화 버튼
 [Button("프리팹 링크 연결 초기화", ButtonSizes.Large)]
 public void SetLinkPrefab()
 {
@@ -48,7 +48,7 @@ public void SetLinkPrefab()
 ### 2) 위치/회전 기록: SO_WeaponRecorder + WeaponRecorder
 
 - 씬에서 소켓(`Socket`)을 기준으로 현재 무기 프리팹의 `localPosition/Rotation`을 기록/적용한다.
-- 프리팹 에셋 상태에서는 실행되지 않도록 가드했으며, `FindAnyObjectByType<Socket>()`로 소켓을 찾는다.
+- 프리팹 에셋 상태에서는 실행되지 않도록 가드
 
 ```csharp
 // 씬 인스턴스에서만 허용, 소켓 기준으로 기록/적용
@@ -81,9 +81,7 @@ public void Record()
 public void SetTransform(Transform socket)
 {
     if (socket == null)
-    {
         return;
-    }
 
     transform.SetParent(socket);
     if (Weapon != null && Weapon.WeaponRecorder != null && Weapon.WeaponRecorder.IsRecorded == true)
@@ -115,9 +113,7 @@ public void Equip(WeaponPresenter target)
     }
 
     if (_curWeapon != null)
-    {
         _curWeapon.transform.SetParent(null);
-    }
 
     _curWeapon = target;
     _curWeapon.SetTransform(_weaponSocket.transform);
@@ -125,10 +121,7 @@ public void Equip(WeaponPresenter target)
 }
 ```
 
-### 5) WeaponSpawner: 서버에서만 스폰(FishNet)
-
-- 서버에서만 무기 프리팹을 인스턴스하고 `ServerManager.Spawn`으로 네트워크에 등록한다.
-
+### 5) 임시 WeaponSpawner(서버)
 ```csharp
 public override void OnStartServer()
 {
@@ -163,13 +156,11 @@ if (SirenixEditorGUI.ToolbarButton(new GUIContent("무기 생성")))
         AssetDatabase.CreateAsset(newLogic, logicPath);
         AssetDatabase.CreateAsset(newRecorder, recorderPath);
         obj.OnInit(newLogic, newRecorder);
+
+        ...
     });
 }
 ```
-
-### 7) ResourceManager 점검(요약)
-
-- Addressables 기반 비동기 로드/캐시 구조를 점검했다. 스프라이트의 경우 `[key][key]` 키 형태로 로드되고, 딕셔너리에 1회 캐시 후 재사용한다. 아이콘/프리팹을 무기 데이터와 연결할 때 이 구조를 활용할 예정이다.
 
 ## 파이프라인 요약(에디터 → 런타임)
 
@@ -198,7 +189,6 @@ if (SirenixEditorGUI.ToolbarButton(new GUIContent("무기 생성")))
 - 장착 로직의 **서버 권한화**: 클라 입력 → 서버 검증 → 적용(Observers 동기화)
 - `SO_WeaponLogic` 설계 확장(근접/원거리 타이밍, 히트 판정 훅)
 - `Melee/Ranged` 스탯 실제 필드 정의 및 FSM 연동(공격 속도/리치 등)
-- Addressables와 무기 아이콘/프리팹 연결 및 UI(슬롯/휠) 구성
 - 드랍/버리기, 슬롯 간 교체, 입력 라우팅 정리(InputSystem)
 
 
