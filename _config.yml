@@ -105,10 +105,10 @@ toc: true
 
 comments:
   # 댓글 시스템 전역 스위치 (비워두면 비활성화)
-  provider: "disqus"
+  provider: 
   # 각 제공자 옵션은 아래와 같습니다:
   disqus:
-    shortname: lmspace
+    shortname:
   # utterances 설정 › https://utteranc.es/
   utterances:
     repo: # <gh-username>/<repo>
