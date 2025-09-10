@@ -103,16 +103,16 @@ social_preview_image: # 문자열, 로컬 또는 CORS 리소스
 # 글 본문에서 목차(TOC) 표시 여부 (전역)
 toc: true
 
-comments:
+comments: 
   # 댓글 시스템 전역 스위치 (비워두면 비활성화)
-  provider: 
+  provider: "utterances" 
   # 각 제공자 옵션은 아래와 같습니다:
   disqus:
     shortname:
   # utterances 설정 › https://utteranc.es/
   utterances:
-    repo: # <gh-username>/<repo>
-    issue_term: # < url | pathname | title | ...>
+    repo: "lmspace7/comments"
+    issue_term: pathname
   # Giscus 설정 › https://giscus.app
   giscus:
     repo: # <gh-username>/<repo>
