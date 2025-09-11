@@ -7,34 +7,39 @@ tags: [SDF, VFX Graph, Unity, TextMeshPro]
 pin: false
 ---
 
-## 눈 내리는 효과과
+## 완성된 모습
+
+![Image](https://github.com/user-attachments/assets/0edc317b-db5a-4453-97d2-2468ae8570d8)
+
+## 눈 내리는 효과
 
 프로젝트를 진행하다가 눈이 내리는 효과가 있고, 이게 특정 물체에 부딪히는 효과까지 자연스럽게 나와야 했다.
 
-일단 눈은 작은 입자라서 파티클로 가는 게 맞고, 구현 수단으로는 Particle System이나 Visual Effect Graph(VFX Graph) 둘 다 후보였다. 그런데 바로 걸리는 게 충돌이었다. 파티클이 월드의 물체들과 어떻게 부딪히게 만들지? CPU에서 충돌을 돌리면 병목이 보이고, GPU에서 하려면 커스텀 Command Buffer 같은 걸로 직접 짜야 하나? (Command Buffer는 개념만 알고 실전으로는 안 써봤다)
+일단 눈은 작은 입자가 흩날리는 것이었기 때문에 구현 수단으로 제일 먼저 생각했던 것은 ParticleSystem 또는 VisualEffect 두 가지였다.
+그런데 바로 걸리는 게 충돌이었다. 파티클이 월드의 물체랑 어떻게 부딪히게 만들 것인지가 고민이었다. 
 
-그러다가 예전에 본 유니티 공식 VFX 튜토리얼에서 파티클 충돌 샘플이 있었던 게 번쩍 떠올랐다. 바로 깔아서 확인해 봤더니, 내가 원하는 목적과 거의 일치하는 샘플이 있었다.
+그러다가 예전에 본 유니티 공식 VFX 튜토리얼에서 파티클 충돌 샘플이 있었던 게 떠올랐다. 바로 설치해서 확인해 봤더니, 내가 원하는 목적과 거의 일치하는 샘플이 있었다!
 
-![Collision Advanced](/assets/_post/Grahpics/Graphics/Collision%20Advanced.png)
+![image](https://github.com/user-attachments/assets/c4d4b6e2-a7ee-4d19-a3d2-5641792e3909)
 
-색만 하얗게 바꾸고, 충돌체를 내가 원하는 물체로 바꾸면 바로 쓸 수 있겠더라.
+색만 하얗게 바꾸고, 충돌체를 내가 원하는 물체로 바꾸면 바로 내가 원하는 효과를 구현할 수 있을 것 같았다.
 
-그래서 충돌체 입력 노드를 보니 두 가지가 있었다. Mesh랑 SDF.
+그래서 VFX에서 충돌 관련 노드들을 살펴보았는데 두 가지가 있었다. Mesh / SDF
 
-![Mesh 콜라이더 예시](/assets/_post/Grahpics/Graphics/HandMesh1.png)
-![SDF 예시](/assets/_post/Grahpics/Graphics/SDF.png)
+<img src="https://github.com/user-attachments/assets/0b7d6bb7-2497-4073-84aa-a1ae3fb299a5" alt="Image1">
+<br>
+<img src="https://github.com/user-attachments/assets/b8d691f0-56d6-4468-9159-cd55934f6e59" alt="Image2">
 
-메시는 이미 준비돼 있어서 상관없었는데 SDF는 처음 들어봐서, 이게 뭔지부터 정리했다.
+Mesh는 이미 준비돼 있어서 큰 문제가 없었지만, SDF는 처음 들어본 용어라 먼저 개념부터 정리했다.
+자료를 조사해 보니 대부분 TextMeshPro와 관련된 SDF 자료가 주를 이루었다. 처음에는 VFX에서 쓰이는 SDF와 TextMeshPro의 SDF가 용어만 같고 전혀 다른 매커니즘인 줄 알았다. 조금 더 조사해 보니, 둘 다 같은 원리를 사용하며 2D로 표현되느냐 3D로 표현되느냐의 차이만 있을 뿐이었다.
 
-## SDF가 뭐길래 (Signed Distance Field)
-
-정확히 말하면, 3D 파티클 충돌과 TextMeshPro의 2D 텍스트 렌더링은 영역이 다르지만 SDF의 핵심 원리는 같다. 2D에 쓰이느냐 3D에 쓰이느냐만 다를 뿐이다.
+## SDF (Signed Distance Field)
 
 컴퓨터 그래픽스에서 형태를 표현하는 방식은 크게 둘이다.
-- 명시적 표현: Vertex/Edge/Polygon으로 표면을 직접 정의한다. 즉 폴리곤 메시.
+- 명시적 표현: Vertex/Edge/Polygon으로 표면을 직접 정의한다. - 폴리곤 메시.
 - 암시적 표현: 어떤 조건을 만족하는 점들의 집합으로 형태를 정의한다. 예를 들어 원점으로부터 거리가 R인 3차원 점들의 집합은 반지름 R인 구를 암시적으로 정의한다.
 
-SDF는 이 암시적 표현의 정중앙에 있는 기술이다. 공간상의 모든 점 P에 대해, 그 점에서 가장 가까운 표면까지의 최단 거리값을 저장하고, 여기에 부호를 붙인다. 내부면 음수, 외부면 양수. 그래서 내부/외부 판정이 한 번에 된다.
+SDF는 이 암시적 표현의 정중앙에 있는 기술이다. 공간상의 모든 점 P에 대해, 그 점에서 가장 가까운 표면까지의 최단 거리 값을 저장하고, 여기에 부호를 붙인다. 내부면은 음수, 외부면은 양수. 그래서 내부/외부 판정이 한 번에 된다.
 
 이게 왜 좋냐면, 기존 명시적 표현(삼각형 단위 계산)으로 풀면 비싸고 복잡한 문제들이 SDF에서는 아주 단순한 거리 비교로 바뀐다.
 
@@ -47,9 +52,9 @@ SDF는 이 암시적 표현의 정중앙에 있는 기술이다. 공간상의 �
 
 결국 한 줄 요약하면: “복잡한 메시가 정의하는 암시적 거리 함수를 샘플링해, GPU가 빠르게 읽을 수 있는 3D 텍스처로 바꾼 것”이 이산적 SDF다. 해상도가 오를수록 정확도는 올라가지만 메모리와 베이킹 시간이 더 든다.
 
-## GPU 파티클 충돌에 SDF가 찰떡인 이유
+## GPU 파티클 충돌에 SDF가 효율적인 이유
 
-전통적인 게임 물리는 CPU에 맞춰져 있다. 개별 객체끼리의 정밀한 상호작용엔 강하지만, VFX Graph처럼 수십만~수백만 파티클을 초당 처리하는 GPU 워크로드에는 안 맞는다. 핵심 문제는 CPU↔GPU 왕복 비용이다. 파티클 위치를 매 프레임 CPU로 보내 충돌을 검사하고, 다시 결과를 GPU로 돌려보내는 건 실시간에 맞추기 어렵다.
+전통적인 게임 물리는 CPU에 맞춰져 있다. 개별 객체끼리의 정밀한 상호작용엔 강하지만, VFX Graph처럼 수십만~수백만 파티클을 초당 처리하는 GPU 워크로드에는 안 맞는다. 핵심 문제는 CPU <-> GPU 왕복 비용이다. 파티클 위치를 매 프레임 CPU로 보내 충돌을 검사하고, 다시 결과를 GPU로 돌려보내는 건 실시간에 맞추기 어렵다.
 
 그래서 답은 “처음부터 끝까지 GPU 안에서 끝내는 것”이다. SDF는 읽기 전용 3D 텍스처라서, 수천 개 스레드가 동시에 빠르게 샘플링할 수 있다. 충돌 판정도 단순하다.
 
@@ -78,14 +83,22 @@ distance = sdfTexture.Sample(particle_position)
 - 얇은 형상, 정밀 접촉, 터널링 방지가 중요: 메시/CPU 물리 고려.
 - 하이파이 시각 효과지만 성능이 더 중요한 경우: SDF 해상도(메모리)와 결과 정확도 사이 트레이드오프를 잡으면 된다.
 
-## Unity에서 SDF 쓰는 간단 흐름(VFX Graph)
+## SDF 베이킹 및 적용
 
-1) 소스 메시 준비 → 2) SDF 베이킹(전용 툴/임포터) → 3) VFX Graph에서 SDF 콜라이더 노드에 3D 텍스처 할당 → 4) 파티클 업데이트 스테이지에서 SDF 충돌 반응 적용(반사, 슬라이드, 킬 등)
+유니티에서는 SDF Baking 툴을 제공해서 딸깍만 8번 하면 3D 텍스처 SDF 파일을 얻을 수 있다.
+Window -> Visual Effects -> Utilities -> SDF Baking Tool을 통해서 에디터 윈도우를 열 수 있다.
 
-핵심은 “GPU에서 텍스처 한 번 읽고 부호 비교”라는 단순함이다. 그래서 눈, 비, 파편 같은 대규모 파티클 충돌에 특히 유리하다.
+<img width="357" height="426" alt="Image" src="https://github.com/user-attachments/assets/425210d5-85a0-4acf-94a0-22d8526716c9" />
+<br>
+<img width="401" height="337" alt="Image" src="https://github.com/user-attachments/assets/406a93dd-e6a0-4a05-8d2d-946b07943412" />
+
+내가 만들고자 하는 충돌체의 Mesh를 인스펙터에 할당하고, Bake mesh 버튼과 Save SDF 버튼을 차례대로 누른 다음에 어디에 저장할 것인지 설정해 주면 된다. 그리고 이렇게 생성된 SDF 에셋을 VFX의 노드 부분에다가 할당만 해 주면 된다!
 
 ## 마치면서
 
-이번에 눈 충돌 효과를 구현하면서, 메시 콜라이더 대신 SDF를 쓰면 GPU 워크로드에 얼마나 잘 들어맞는지 체감했다. 원리는 단순하지만 효과는 확실하다. 필요한 정확도/메모리/베이킹 시간을 저울질해서, 상황에 맞게 SDF 해상도만 잘 잡아주면 된다.
+이번에 눈 충돌 효과를 구현하면서, 메시 콜라이더 대신 SDF를 사용했을 때 GPU 워크로드와 얼마나 잘 맞는지 직접 체감할 수 있었다. 원리는 단순하지만 효과는 확실하다. 필요한 정확도, 메모리, 베이킹 시간을 적절히 저울질한 뒤 상황에 맞게 SDF 해상도만 잘 설정하면 된다.
 
+현재 프로젝트에서는 정적인 Mesh를 대상으로 입자가 부딪히는 효과를 구현해야 했기 때문에, 사전 Baking을 통해 만든 SDF를 사용했다. 참고로, 런타임에서 동적으로 Baking을 처리하는 패키지도 존재한다.
+지금 당장은 런타임 Baking이 필요하지 않으므로 굳이 설치해서 사용하지는 않겠지만, 앞으로 필요해질 경우에는 한 번 사용해볼 생각이다.
 
+[https://github.com/Unity-Technologies/com.unity.demoteam.mesh-to-sdf](https://github.com/Unity-Technologies/com.unity.demoteam.mesh-to-sdf)
