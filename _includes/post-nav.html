@@ -4,13 +4,46 @@
   {% assign previous = site.data.locales[include.lang].post.button.previous %}
   {% assign next = site.data.locales[include.lang].post.button.next %}
 
-  {% if page.previous.url %}
+  {%- comment -%} 같은 카테고리 내 이전/다음 포스트 계산 {%- endcomment -%}
+  {% assign cat_previous = nil %}
+  {% assign cat_next = nil %}
+
+  {% if page.categories and page.categories.size > 0 %}
+    {% assign primary_category = page.categories | first %}
+    {% assign same_cat_posts = site.categories[primary_category] | sort: 'date' %}
+
+    {% if same_cat_posts and same_cat_posts.size > 0 %}
+      {% assign current_index = nil %}
+      {% for p in same_cat_posts %}
+        {% if p.url == page.url %}
+          {% assign current_index = forloop.index0 %}
+        {% endif %}
+      {% endfor %}
+
+      {% if current_index != nil %}
+        {% assign posts_count = same_cat_posts | size %}
+        {% assign last_index = posts_count | minus: 1 %}
+
+        {% if current_index > 0 %}
+          {% assign prev_index = current_index | minus: 1 %}
+          {% assign cat_previous = same_cat_posts[prev_index] %}
+        {% endif %}
+
+        {% if current_index < last_index %}
+          {% assign next_index = current_index | plus: 1 %}
+          {% assign cat_next = same_cat_posts[next_index] %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+
+  {% if cat_previous and cat_previous.url %}
     <a
-      href="{{ site.baseurl }}{{ page.previous.url }}"
+      href="{{ site.baseurl }}{{ cat_previous.url }}"
       class="btn btn-outline-primary"
       aria-label="{{ previous }}"
     >
-      <p>{{ page.previous.title }}</p>
+      <p>{{ cat_previous.title }}</p>
     </a>
   {% else %}
     <div class="btn btn-outline-primary disabled" aria-label="{{ previous }}">
@@ -18,13 +51,13 @@
     </div>
   {% endif %}
 
-  {% if page.next.url %}
+  {% if cat_next and cat_next.url %}
     <a
-      href="{{ site.baseurl }}{{page.next.url}}"
+      href="{{ site.baseurl }}{{ cat_next.url }}"
       class="btn btn-outline-primary"
       aria-label="{{ next }}"
     >
-      <p>{{ page.next.title }}</p>
+      <p>{{ cat_next.title }}</p>
     </a>
   {% else %}
     <div class="btn btn-outline-primary disabled" aria-label="{{ next }}">
