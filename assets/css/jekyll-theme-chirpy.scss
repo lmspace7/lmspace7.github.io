@@ -1,7 +1,16 @@
 ---
 ---
 
+/* stylelint-disable */
+/* csslint ignore:start */
 /* prettier-ignore */
 @use "main{%- if jekyll.environment == 'production' -%}.bundle{%- endif -%}";
+/* csslint ignore:end */
 
 /* append your custom style below */
+.post-content blockquote.important {
+  border-left: var(--q-border-width, 6px) solid var(--q-border-color, #0d6efd);
+  background-color: var(--q-bg, rgba(13, 110, 253, 0.06));
+  padding-left: var(--q-padding-left, 1rem);
+  margin-left: 0;
+}

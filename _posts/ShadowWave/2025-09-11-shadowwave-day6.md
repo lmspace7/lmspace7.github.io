@@ -3,7 +3,7 @@ title: ShadowWave 개발일지 6일차
 description: 무기 생성기 통합, 장착/교체 RPC, 근접 콤보 액션, 네트워크 애니 동기화
 date: 2025-09-11 17:50:00 +0900
 categories: [개발일지, 게임개발]
-tags: [Unity, FishNet, 무기, ScriptableObject, OdinInspector, Cinemachine, InputSystem, 네트워크, 멀티플레이, ShadowWave]
+tags: [Unity, FishNet, 무기, ScriptableObject, OdinInspector, InputSystem, 네트워크, 멀티플레이, ShadowWave]
 pin: false
 ---
 
