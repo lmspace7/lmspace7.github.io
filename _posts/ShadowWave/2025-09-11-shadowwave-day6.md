@@ -17,7 +17,7 @@ pin: false
   - 기즈모로 탐색 반경 시각화
 - 근접 전투: `SO_WeaponSequence` + `MeleeWeaponLogic` + `MeleeComboAction`
   - 콤보 인덱스와 애니 파라미터(NetworkAnimator) 동기화
-- 플레이어 상태: `PlayerAttackState`에서 무기 로직 생성/수명주기 관리 및 상태 전이
+- 플레이어 상태: `PlayerAttackState`에서 무기 로직 생성/수명주기 관리 및 상태 전환
 - 카메라: `PlayerCamera`로 소유자 기준 `CinemachineCamera` 스폰 및 Follow 설정
 
 에디터에서 근접 무기 데이터 세트를 한 번에 만들 수 있게 했다. 런타임에서는 RPC 기반 서버 권한 + ObserversRpc로 장착/교체가 효율적으로 클라이언트에 동기화되도록 했다.
@@ -70,9 +70,9 @@ if (_queuedNextCombo == true && _queuedAppliedInState == false && elapsedTime >=
 }
 ```
 
-### 4) 플레이어 상태 연동: 액션 수명주기와 전이
+### 4) 플레이어 상태 연동: 액션 수명주기와 상태 전환
 
-`PlayerAttackState`는 현재 무기의 `IWeaponLogic`에서 액션을 생성해 Tick/Cancel을 관리한다. 액션이 종료되면 이동 입력 유무로 Move/Idle로 전이한다.
+`PlayerAttackState`는 현재 무기의 `IWeaponLogic`에서 액션을 생성해 Tick/Cancel을 관리한다. 액션이 종료되면 이동 입력 유무로 Move/Idle로 전환한다.
 
 ```csharp
 // 생성
@@ -101,7 +101,7 @@ _context.FSM.SetState(E_PlayerState.Idle);
 
 ## 메모
 - 장착/교체: 반경 탐색 → 장착 요청(ServerRpc) → 적용(서버) → 동기화(ObserversRpc) 정상 동작
-- 콤보: 입력 버퍼/홀드 체인/타이밍 윈도우 평가에 따라 단계적 전이가 기대대로 작동
+- 콤보: 입력 버퍼/홀드 체인/타이밍 윈도우 평가에 따라 단계적 상태 전환이 기대대로 작동
 - 애니메이션: NetworkAnimator 기반 트리거/정수 파라미터 동기화 정상
 - 카메라: 소유자 전용 시점 생성 및 추적 정상
 - 에셋/프리팹: `SO_Weapon`의 링크 버튼으로 `WeaponObject`/`WeaponRecorder` 누락 상태를 즉시 보정

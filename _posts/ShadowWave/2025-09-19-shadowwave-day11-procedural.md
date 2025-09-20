@@ -1,0 +1,43 @@
+---
+title: ShadowWave 개발일지 11일차
+description: 프로시저럴 던전(프로토타입) - 직렬 방 배치, 연결점 정합
+date: 2025-09-19 22:30:00 +0900
+categories: [개발일지, 게임개발]
+tags: [Unity, Procedural, Dungeon, Generation]
+pin: false
+---
+
+## 오늘의 작업 내용
+
+- `DungeonGenerator` 프로토타입 작성: 시작→전투×N→보스 직렬 시퀀스 생성
+- 연결점(Entry/Exit) 정합과 위치/회전 보정으로 프리팹을 연속 배치
+- 기존 방 제거, 새 시퀀스 재생성 기능
+
+## 설계/구현
+
+### 1) 시퀀스 구성
+- 시작/전투/보스 프리팹을 순서대로 나열(`BuildSequence`)
+- 전투 방은 리스트에서 랜덤 선택(추후 시드 고정 예정)
+
+### 2) 배치 알고리즘
+- 이전 방에서 미사용 출구를 선택 → 새 방 임시 인스턴스에서 입구 포인트 선택
+- 회전: 출구 방향의 정반대를 보도록 180도 회전 보정
+- 위치: 새 방의 입구가 이전 방의 출구 좌표와 일치하도록 이동
+
+```csharp
+// DungeonGenerator.Generate()
+GameObject startGo = Instantiate(StartRoomPrefab, Vector3.zero, Quaternion.identity);
+SpawnAndConnect(nextPrefab, previousRoom, out Room spawned);
+```
+
+### 3) 자료구조
+- `_spawnedRooms`로 생성 추적, `_usedConnectionPoints`로 연결점 재사용 방지
+
+## 테스트 항목
+- CombatRoomPrefabs 목록이 비었을 때 오류 검출
+- 전투 방 개수 변경 시 직렬 길이 변경 확인
+
+## 마무리
+프로토타입 단계에서 단순 직렬 배치를 우선 구현했다. 이후에는 분기 그래프, 루프, 잠금/키, 난이도 곡선과 서버 시드 고정 등을 단계적으로 확장할 계획이다.
+
+

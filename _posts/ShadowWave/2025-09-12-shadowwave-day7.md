@@ -11,7 +11,7 @@ pin: false
 
 - 데이터 Model: `DamageInfo`, `HitResult`, `E_Damage`, `E_HitReaction` + `IDamageable`, `ITeamOwner`
 - 수신: `DamageHit`에 서버 권위 `ApplyDamage` 구현(팀 판정, 사망, RPC 통지)
-- 발신: `WeaponHitBox`에 소유자/템플릿 주입, 서버 전용 트리거 판정, 팀/자기 자신 필터, 스윙당 1회 히트 캐시
+- 발신: `WeaponHitBox`에 소유자/템플릿 전달, 서버 전용 트리거 판정, 팀/자기 자신 필터링, 스윙당 1회 히트 캐시
 - 타이밍 윈도우: `MeleeComboAction`에서 스텝의 `ComboTimingStart/End` 구간에 `Activate/Deactivate`
 - 무기 로직: `MeleeWeaponLogic.CreateAction`에서 액션 생성 직후 히트박스 주입
 - 플레이어 팀 판정: `PlayerController`가 `ITeamOwner` 구현(팀/자기 자신 필터)
@@ -69,7 +69,7 @@ pin: false
 
 
 ## 메모
-- 서버 권위로 히트 판정/데미지 적용 → `HitResult`만 전송, VFX/SFX/카메라/숫자 표시는 클라 로컬 처리
+- 서버 권위로 히트 판정/데미지 적용 → `HitResult`만 전송, 카메라/숫자 표시는 클라 로컬 처리
 - `NetworkAnimator`로 콤보 파라미터(Trigger/Integer) 동기화 유지
 - 플레이어에 `ITeamOwner`를 추가한 뒤 팀/자기 자신 필터가 정상 동작
 - `WeaponController`의 액션 Tick 제거로 상태·타이밍 불일치 위험 해소(FSM 단일 경로)
@@ -77,7 +77,7 @@ pin: false
 
 ## 다음 단계
 - 피격 반응 정책: 경직/히트스턴/넉백 
-- VFX/SFX/카메라 연동 + UI
+- 카메라 연동 + UI
 - 원거리 로직/프로젝트일: Muzzle, Ray/Projectile
 
 ## 마무리
