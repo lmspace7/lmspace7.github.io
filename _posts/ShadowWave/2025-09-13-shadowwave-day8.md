@@ -10,7 +10,7 @@ pin: false
 ## 오늘의 작업 내용
 
 - HitReactionHandler 추가: `DamageHit.OnDamaged(HitResult)`를 구독해 경직/넉백 표현
-- 서버 권위: 넉백은 서버에서만 적용, 클라에서는 애니 트리거만 재생
+- 서버 권위: 넉백은 서버에서만 적용, 클라에서는 애니메이션 트리거만 재생
 - FSM/이동 차단: 리액션 중 `EnemyController`의 FSM Tick/이동/속도 리셋 중지
 - 넉백 방향 고정: `WeaponHitBox`에서 공격자 -> 대상 방향으로 `DamageInfo.Direction` 설정
 

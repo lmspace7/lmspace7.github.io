@@ -1,6 +1,6 @@
 ---
 title: ShadowWave 개발일지 6일차
-description: 무기 생성기 통합, 장착/교체 RPC, 근접 콤보 액션, 네트워크 애니 동기화
+description: 무기 생성기 통합, 장착/교체 RPC, 근접 콤보 액션, 네트워크 애니메이션 동기화
 date: 2025-09-11 17:50:00 +0900
 categories: [개발일지, 게임개발]
 tags: [Unity, FishNet, 무기, ScriptableObject, OdinInspector, InputSystem, 네트워크, 멀티플레이, ShadowWave]
@@ -8,7 +8,6 @@ pin: false
 ---
 
 ## 오늘의 작업 내용
-
 - 에디터: `WeaponCreatorEditorWindow`에 "근접 무기 생성" 버튼 추가
   - Logic / Recorder / Sequence 에셋 자동 생성 및 바인딩
   - 원거리 무기 생성은 추후 작업 예정
@@ -16,7 +15,7 @@ pin: false
   - 반경 탐색 → 소켓 부착(`WeaponObject`) → `AnimatorOverrideController` 적용
   - 기즈모로 탐색 반경 시각화
 - 근접 전투: `SO_WeaponSequence` + `MeleeWeaponLogic` + `MeleeComboAction`
-  - 콤보 인덱스와 애니 파라미터(NetworkAnimator) 동기화
+  - 콤보 인덱스와 애니메이션 파라미터(NetworkAnimator) 동기화
 - 플레이어 상태: `PlayerAttackState`에서 무기 로직 생성/수명주기 관리 및 상태 전환
 - 카메라: `PlayerCamera`로 소유자 기준 `CinemachineCamera` 스폰 및 Follow 설정
 
@@ -105,7 +104,7 @@ _context.FSM.SetState(E_PlayerState.Idle);
 - 애니메이션: NetworkAnimator 기반 트리거/정수 파라미터 동기화 정상
 - 카메라: 소유자 전용 시점 생성 및 추적 정상
 - 에셋/프리팹: `SO_Weapon`의 링크 버튼으로 `WeaponObject`/`WeaponRecorder` 누락 상태를 즉시 보정
-- 상태 해제 타이밍: 콤보 종료 조건을 "큐 없음 + 애니 종료" 또는 "태그 이탈"로 분리해 조기 종료/지연 종료 이슈 완화
+- 상태 해제 타이밍: 콤보 종료 조건을 "큐 없음 + 애니메이션 종료" 또는 "태그 이탈"로 분리해 조기 종료/지연 종료 이슈 완화
 - 입력 기록: 진행 중에도 입력 시간을 갱신해 버퍼 판정 누락을 방지
 
 ## 다음 단계

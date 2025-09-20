@@ -24,7 +24,7 @@ pin: false
 ### 1) SO_Weapon: 데이터 단일화 + 프리팹 링크 버튼
 
 - 아이콘/이름/표시이름/ID, View 프리팹, 애니메이터 오버라이드, 손잡이/기본 소켓, 카테고리(근접/원거리)와 하위 스탯을 한곳에 모았다.
-- 프리팹에 `WeaponPresenter`/`WeaponRecorder`가 누락되었거나 다른 SO에 연결되어 있으면, 에디터 버튼으로 즉시 정합성을 맞춘다.
+- 프리팹에 `WeaponPresenter`/`WeaponRecorder`가 누락되었거나 다른 SO에 연결되어 있으면, 에디터 버튼으로 즉시 일치 상태를 맞춘다.
 
 ```csharp
 // 프리팹 링크 초기화 버튼
