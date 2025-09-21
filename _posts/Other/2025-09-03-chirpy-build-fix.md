@@ -20,7 +20,7 @@ Conversion error: Jekyll::Converters::Scss encountered an error while converting
 
 ## 처음 시도한 해결들(실패)
 
-1. GitHub Settings → Pages → Build and deployment에서 Source를 GitHub Actions로 변경
+1. GitHub Settings -> Pages -> Build and deployment에서 Source를 GitHub Actions로 변경
 2. `bundle lock --add-platform x86_64-linux` 실행(원격 빌드용 플랫폼 추가)
 
 두 가지 다 시도했지만 증상은 그대로였다. 혹시 예전에 설치했던 흔적이나 버전 꼬임인가 싶어서 로컬 루비/젬, 블로그 관련 파일들을 싹 정리 후 재설치를 했는데, 이번에는 로컬에서도 `SCSS` 변환 에러가 계속 났다.

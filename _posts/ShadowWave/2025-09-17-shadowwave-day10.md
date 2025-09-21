@@ -20,7 +20,7 @@ pin: false
 - 서버는 표현에 개입하지 않음(결정만 서버: 치명타/리액션 수치 확정)
 
 ### 2) 이벤트 소스
-- 서버 확정 후 `ObserversRpc/TargetRpc` → SO 이벤트 채널로 분배
+- 서버 확정 후 `ObserversRpc/TargetRpc` -> SO 이벤트 채널로 분배
 - `HitResult.HitStopSeconds`를 근거로 로컬 `Request` 호출
 
 ### 3) 구독자
@@ -34,7 +34,7 @@ pin: false
 – 배경: 초기에는 `HitReactionHandler`의 플래그(`IsInReaction`)만으로 경직/넉백을 처리했으나, 로직 복잡도 상승과 무거운 반응의 명시적 전환이 필요해져 하이브리드로 전환.
 - 정책:
   - Light: 기존과 동일하게 플래그 기반 차단(짧은 스턴/히트스탑)으로 처리
-  - Heavy: 서버에서 전용 상태로 전환 → `E_EnemyState.Stagger`
+- Heavy: 서버에서 전용 상태로 전환 -> `E_EnemyState.Stagger`
   - 종료: `HitReactionHandler.IsInReaction == false`가 되는 시점에 `Chasing/Idle`로 복귀
 - 구현 포인트:
   - `E_EnemyState`에 `Stagger` 추가

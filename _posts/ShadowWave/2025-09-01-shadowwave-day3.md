@@ -94,11 +94,11 @@ else if (isEndAttack && _input.HasMoveInput() == false)
 
 ## 상태 전환 흐름(요약)
 
-- Idle → Move: 이동 입력 발생
-- Idle/Move → Roll: 회피 입력 + 쿨다운 완료
-- Idle/Move → Attack: 공격 입력 + 쿨다운 완료
-- Roll → Idle: 애니메이션 종료 + 롤 시간 경과
-- Attack → Idle/Move: 애니메이션 종료 후 이동 입력 유무에 따라 분기
+- Idle -> Move: 이동 입력 발생
+- Idle/Move -> Roll: 회피 입력 + 쿨다운 완료
+- Idle/Move -> Attack: 공격 입력 + 쿨다운 완료
+- Roll -> Idle: 애니메이션 종료 + 롤 시간 경과
+- Attack -> Idle/Move: 애니메이션 종료 후 이동 입력 유무에 따라 분기
 
 ## 네트워크/애니메이션 동기화
 

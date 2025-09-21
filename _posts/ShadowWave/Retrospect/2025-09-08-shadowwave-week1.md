@@ -22,9 +22,9 @@ pin: false
 
 - **FishNet 학습 정리**: 권한 체계, `[Server]/[Client]`, `ServerRpc/ClientRpc/ObserversRpc`, `SyncVar<T>`의 OnChange 활용 등 기본기를 확보했다.
 - **제네릭 상태 동기화(`SyncEnum<TEnum>`)**: 서버 권한 변경, 델타/풀 전송, 변경 이벤트를 표준화하여 어떤 열거형 상태에도 재사용 가능하게 만들었다.
-- **플레이어 FSM**: Idle/Move/Roll/Attack 상태를 컴포넌트화하고, `NetworkAnimator` 트리거 동기화로 시각적 일관성을 보장했다.
-- **적 FSM/AI (서버 전용 Tick)**: 판단·상태 전환을 서버에서 통합해 처리하여 권한 충돌과 부정행위 위험을 낮췄다.
-- **무기 파이프라인**: `SO_Weapon`(데이터) <-> `WeaponPresenter`(View) ↔ `SO_WeaponRecorder`/`WeaponRecorder`(기록) <-> `WeaponController`(장착) <-> `WeaponSpawner`(서버 스폰)로 흐름을 정리했다. Odin 기반 에디터 창으로 에셋 생성을 자동화했다.
+- **플레이어 FSM**: Idle/Move/Roll/Attack 상태를 컴포넌트화하고, `NetworkAnimator` 트리거 동기화로 화면 표현의 일관성을 보장했다.
+- **적 FSM/AI (서버 전용 Tick)**: 판단·상태 전환을 서버에서 묶어 처리하여 권한 충돌과 보안 위험을 낮췄다.
+- **무기 파이프라인**: `SO_Weapon`(데이터) <-> `WeaponPresenter`(View) <-> `SO_WeaponRecorder`/`WeaponRecorder`(기록) <-> `WeaponController`(장착) <-> `WeaponSpawner`(서버 스폰)로 흐름을 정리했다. Odin 기반 에디터 창으로 에셋 생성을 자동화했다.
 
 ## 일정 변수
 
@@ -37,8 +37,8 @@ pin: false
 
 ## 다음 주 계획(Week 2)
 
-- **전투 파이프라인 확장**: `SO_WeaponLogic` 정식화(근접/원거리 타이밍, 히트 훅), 스탯(리치/공속 등) 정의.
-- **플레이어 ↔ 적 상호작용 완성**: 히트 판정, 경직/무적 프레임, 데미지 처리(서버 판정) 연계.
+- **전투 파이프라인 확장**: `SO_WeaponLogic` 정식화(근접/원거리 타이밍, 히트 훅), 스탯(사거리/공속 등) 정의.
+- **플레이어 <-> 적 상호작용 완성**: 히트 판정, 경직/무적 프레임, 데미지 처리(서버 판정) 연계.
 - **콤보 공격 구조**: 재사용 가능한 콤보 체인(입력·타이밍·상태 전환) 설계/구현.
 - **네트워크 검증/테스트**: Host/Client 재현성, 지연/패킷 유실 환경에서의 일관성 확인.
 - **UX/툴링**: InputSystem 라우팅 정리, 에디터 자동화(검증/링크/프리셋) 고도화.

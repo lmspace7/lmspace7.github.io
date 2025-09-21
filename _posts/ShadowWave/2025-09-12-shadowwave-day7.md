@@ -1,6 +1,6 @@
 ---
 title: ShadowWave 개발일지 7일차
-description: 데미지/히트박스 통합, 서버 권위 처리, 콤보 타이밍 윈도우
+description: 데미지/히트박스 통합, 서버 권위 처리, 콤보 시간 구간
 date: 2025-09-12 23:10:00 +0900
 categories: [개발일지, 게임개발]
 tags: [Unity, FishNet, 무기, 전투, 히트박스, 데미지, ScriptableObject, InputSystem]
@@ -12,11 +12,11 @@ pin: false
 - 데이터 Model: `DamageInfo`, `HitResult`, `E_Damage`, `E_HitReaction` + `IDamageable`, `ITeamOwner`
 - 수신: `DamageHit`에 서버 권위 `ApplyDamage` 구현(팀 판정, 사망, RPC 통지)
 - 발신: `WeaponHitBox`에 소유자/템플릿 전달, 서버 전용 트리거 판정, 팀/자기 자신 필터링, 스윙당 1회 히트 캐시
-- 타이밍 윈도우: `MeleeComboAction`에서 스텝의 `ComboTimingStart/End` 구간에 `Activate/Deactivate`
+- 시간 구간: `MeleeComboAction`에서 스텝의 `ComboTimingStart/End` 구간에 `Activate/Deactivate`
 - 무기 로직: `MeleeWeaponLogic.CreateAction`에서 액션 생성 직후 히트박스 주입
 - 플레이어 팀 판정: `PlayerController`가 `ITeamOwner` 구현(팀/자기 자신 필터)
 
-무기-히트박스-데미지로 이어지는 공격과 피격에 대한 부분을 서버 권위기반으로 작성했다. 콤보 타이밍에 맞춰 히트박스가 켜지고 꺼지며, 팀/자기 자신 필터와 중복 히트 방지가 안정적으로 작동해 한 번의 스윙은 단 한 번만 맞는다. 공격의 행동(MeleeAction)이 생성되는 순간 히트박스가 주입이 되도록 로직을 수정했고, 공격의 결과는 `옵저버 RPC`로 관측자에게만 전송되도록했다.
+무기-히트박스-데미지로 이어지는 공격과 피격에 대한 부분을 서버 권위기반으로 작성했다. 콤보 시간에 맞춰 히트박스가 켜지고 꺼지며, 팀/자기 자신 필터링과 중복 히트 방지가 안정적으로 작동해 한 번의 스윙은 단 한 번만 맞는다. 공격의 행동(MeleeAction)이 생성되는 순간 히트박스가 주입이 되도록 로직을 수정했고, 공격의 결과는 `옵저버 RPC`로 관측자에게만 전송되도록 했다.
 
 ## 설계/구현
 
@@ -50,7 +50,7 @@ pin: false
 ```
 
 ### 2) 서버 권위 수신 코어
-- `DamageHit.ApplyDamage`는 서버에서만 체력 가감/무적/사망 판정 수행 후 `ObserversRpc`/`TargetRpc`로 결과 전파
+- `DamageHit.ApplyDamage`는 서버에서만 체력 증감/무적/사망 판정 수행 후 `ObserversRpc`/`TargetRpc`로 결과 전파
 
 > ### **왜 ObserversRPC/TargetRPC인가?**
 > - 현재 게임은 플레이어 활동 범위가 넓게 분리되지 않아 ClientRPC만 사용해도 동작은 가능하다. 다만 학습과 효율을 위해 전파 범위를 최적화했다.
@@ -58,18 +58,18 @@ pin: false
 > - TargetRPC: 특정 클라이언트에게만 보낸다. 공격 결과의 강한 피드백(카메라/히트스탑 등)은 소유자에게만 필요하므로, 전체 브로드캐스트(ClientRPC) 대신 타겟 전송으로 트래픽을 줄인다.
 {: .important style="--q-border-width: 8px; --q-border-color: #0d6efd; --q-bg: rgba(13,110,253,.08); --q-padding-left: 1.25rem;"}
 
-### 3) 히트박스 컴포넌트/주입/타이밍 윈도우
+### 3) 히트박스 컴포넌트/주입/시간 구간
 - `WeaponHitBox`는 무기 오브젝트에 부착
 - 장착 시 `SetOwner(ITeamOwner, NetworkObject)`/`SetTemplate(DamageInfo)`/`SetFriendlyFire(false)`로 초기화, 기본 비활성화
 - 서버 전용 트리거 판정 경로에서 팀/자기 자신 필터와 스윙 중복 히트 방지(HashSet) 적용
-- `MeleeComboAction.UpdateCombo`가 각 스텝의 `ComboTimingStart/End`에 맞춰 `Activate/Deactivate` 호출 → 유효 타격 구간 제어
+- `MeleeComboAction.UpdateCombo`가 각 스텝의 `ComboTimingStart/End`에 맞춰 `Activate/Deactivate` 호출 -> 유효 타격 구간 제어
 - 종료/리셋 시점에 `Deactivate` 
 - `MeleeWeaponLogic.CreateAction`에서 액션 생성 직후 현재 무기 프리팹의 `WeaponHitBox` 주입
 - `WeaponController`는 Equip 시 히트박스 필수 확인 및 초기화만 수행(액션 구동은 FSM 전담)
 
 
 ## 메모
-- 서버 권위로 히트 판정/데미지 적용 → `HitResult`만 전송, 카메라/숫자 표시는 클라 로컬 처리
+- 서버 권위로 히트 판정/데미지 적용 -> `HitResult`만 전송, 카메라/숫자 표시는 클라 로컬 처리
 - `NetworkAnimator`로 콤보 파라미터(Trigger/Integer) 동기화 유지
 - 플레이어에 `ITeamOwner`를 추가한 뒤 팀/자기 자신 필터가 정상 동작
 - `WeaponController`의 액션 Tick 제거로 상태·타이밍 불일치 위험 해소(FSM 단일 경로)

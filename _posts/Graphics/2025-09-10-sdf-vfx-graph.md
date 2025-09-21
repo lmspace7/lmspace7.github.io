@@ -62,8 +62,8 @@ SDF는 이 암시적 표현의 정중앙에 있는 기술이다. 공간상의 �
 distance = sdfTexture.Sample(particle_position)
 ```
 
-- distance ≤ 0이면 콜라이더 내부 → 충돌로 간주
-- distance > 0이면 외부 → 통과
+- distance ≤ 0이면 콜라이더 내부 -> 충돌로 간주
+- distance > 0이면 외부 -> 통과
 
 이걸 파티클마다 병렬로 돌리면 끝이다. 삼각형-삼각형 같은 무거운 기하 연산 없이, 텍스처 읽기 + 비교만으로 충돌 처리가 된다.
 

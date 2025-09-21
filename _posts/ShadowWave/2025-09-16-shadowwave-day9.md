@@ -9,13 +9,13 @@ pin: false
 
 ## 오늘의 작업 내용
 
-- 발사 파이프라인 정리: 액션 → 컨트롤러 RPC → 서버 스폰
+- 발사 파이프라인 정리: 액션 -> 컨트롤러 RPC -> 서버 스폰
 - `ProjectileDamage` 컴포넌트 추가: 직진 이동, SphereCast 충돌, 팀 필터링, 1회 히트 후 디스폰
 - `WeaponController.SpawnProjectile()` 함수에서 소유자/팀/템플릿 전달
 
 ## 설계/구현
 
-### 1) 액션/로직(클라 입력) → 서버 스폰
+### 1) 액션/로직(클라 입력) -> 서버 스폰
 - `RangedShootAction`이 발사 타이밍을 판정하고 머즐 위치/회전으로 `RequestFire()` 함수를 호출
 - `WeaponController`가 `ServerRpc`로 서버에 요청, 서버에서 `SpawnProjectile()` 함수를 호출
 
@@ -33,11 +33,11 @@ _context.Weapon.RequestFire(spawnPos, spawnRot);
 - 충돌 시 `IDamageable.ApplyDamage(DamageInfo)` 호출, 1회 적용 후 디스폰
 - 팀/자기 자신 필터링, 넉백/리액션은 템플릿을 사용
 
-### 3) 데이터 계약 재사용
-- 기존 `DamageInfo/HitResult`를 그대로 사용, `Type = Ranged`로 지정
+### 3) 데이터 용어 재사용
+ - 기존 `DamageInfo/HitResult`를 그대로 사용, `Type = Ranged`로 지정
 
 ## 테스트
-- 호스트/클라 환경에서 발사 → 충돌 시 서버 로그로 데미지/HP 감소 확인
+- 호스트/클라 환경에서 발사 -> 충돌 시 서버 로그로 데미지/HP 감소 확인
 - 프리팹에 `NetworkObject`와 `ProjectileDamage` 부착 필요
 
 ## 마무리
