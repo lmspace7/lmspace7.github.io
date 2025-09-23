@@ -106,24 +106,21 @@ toc: true
 comments: 
   # 댓글 시스템 전역 스위치 (비워두면 비활성화)
   provider: "utterances" 
-  # 각 제공자 옵션은 아래와 같습니다:
-  disqus:
-    shortname:
   # utterances 설정 › https://utteranc.es/
   utterances:
     repo: "lmspace7/comments"
     issue_term: pathname
-  # Giscus 설정 › https://giscus.app
+  # (옵션) Giscus를 사용할 경우 아래를 채우세요
   giscus:
-    repo: # <gh-username>/<repo>
+    repo: 
     repo_id:
     category:
     category_id:
-    mapping: # 선택, 기본값 'pathname'
-    strict: # 선택, 기본값 '0'
-    input_position: # 선택, 기본값 'bottom'
-    lang: # 선택, 기본값은 `site.lang`
-    reactions_enabled: # 선택, 기본값 '1'
+    mapping:
+    strict:
+    input_position:
+    lang:
+    reactions_enabled:
 
 # 정적 자산 자체 호스팅 (선택) › https://github.com/cotes2020/chirpy-static-assets
 assets:

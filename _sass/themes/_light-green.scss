@@ -1,0 +1,110 @@
+// Light Green 변형: 라이트 기반에 녹색 계열 포커스 색상
+@mixin styles {
+  /* Framework color */
+  --main-bg: #f0f7f2; /* 더 녹색 기운이 도는 라이트 배경 */
+  --mask-bg: #c3e2c7;
+  --main-border-color: #d8eadc;
+
+  /* Common color */
+  --text-color: #2e3a2e;
+  --text-muted-color: #667a66;
+  --text-muted-highlight-color: inherit;
+  --heading-color: #1f2b1f;
+  --label-color: #557055;
+  --blockquote-border-color: #e4f1e4;
+  --blockquote-text-color: #667a66;
+  --link-color: #1b7f43; /* green-700 */
+  --link-underline-color: #d7ead7;
+  --button-bg: #ffffff;
+  --btn-border-color: #dbe8db;
+  --btn-backtotop-color: #5a6b5a;
+  --btn-backtotop-border-color: #edf5ed;
+  --checkbox-color: #b5d0b5;
+  --checkbox-checked-color: #19a76a;
+  --img-bg: radial-gradient(circle, rgb(245 250 246) 0%, rgb(225 241 230) 100%);
+  --shimmer-bg: linear-gradient(
+    90deg,
+    rgb(250 250 250 / 0%) 0%,
+    rgb(214 236 214 / 100%) 50%,
+    rgb(250 250 250 / 0%) 100%
+  );
+
+  /* Sidebar */
+  --site-title-color: #5f8b5f;
+  --site-subtitle-color: #6f9a6f;
+  --sidebar-bg: #e9f5ec;
+  --sidebar-border-color: #d3e8d8;
+  --sidebar-muted-color: #567056;
+  --sidebar-active-color: #122012;
+  --sidebar-hover-bg: rgb(191 232 191 / 40%);
+  --sidebar-btn-bg: white;
+  --sidebar-btn-color: #7f9a7f;
+  --avatar-border-color: white;
+
+  /* Topbar */
+  --topbar-bg: rgb(255 255 255 / 70%);
+  --topbar-text-color: #3d523d;
+  --search-border-color: #e6f1e6;
+  --search-icon-color: #9db79d;
+  --input-focus-border-color: #7fbf7f;
+
+  /* Home page */
+  --post-list-text-color: #465a46;
+  --btn-patinator-text-color: #4f614f;
+  --btn-paginator-hover-color: var(--sidebar-bg);
+
+  /* Posts */
+  --toc-highlight: #157347; /* bootstrap success-700 */
+  --toc-popup-border-color: #cfe3cf;
+  --btn-share-color: #6b6b6b;
+  --btn-share-hover-color: #198754; /* success */
+  --card-bg: #ffffff;
+  --card-hover-bg: #def0e3; /* 호버 시 녹색 빛 강조 */
+  --card-shadow: rgb(50 120 80 / 10%) 0 4px 12px 0,
+    rgb(120 180 140 / 18%) 0 0 0 1px;
+  --footnote-target-bg: #e7fff0;
+  --tb-odd-bg: #eef7f0;
+  --tb-border-color: #d3e8d8;
+  --dash-color: #c2d8c2;
+  --kbd-wrap-color: #b7d2b7;
+  --kbd-text-color: var(--text-color);
+  --kbd-bg-color: white;
+  --prompt-text-color: rgb(46 66 46 / 77%);
+  --prompt-tip-bg: rgb(123 247 144 / 20%);
+  --prompt-tip-icon-color: #03b303;
+  --prompt-info-bg: #e1f5fe;
+  --prompt-info-icon-color: #0070cb;
+  --prompt-warning-bg: rgb(255 243 205);
+  --prompt-warning-icon-color: #ef9c03;
+  --prompt-danger-bg: rgb(248 215 218 / 56%);
+  --prompt-danger-icon-color: #df3c30;
+
+  /* Tags */
+  --tag-border: #dbe8db;
+  --tag-shadow: var(--btn-border-color);
+  --tag-hover: #e3f0e3;
+  --search-tag-bg: #f4faf4;
+
+  /* Archive */
+  --timeline-color: rgb(0 0 0 / 7.5%);
+  --timeline-node-bg: #c2e0c2;
+  --timeline-year-dot-color: #ffffff;
+
+  /* Code highlight colors (keep light baseline, slight green accents) */
+  --language-border-color: #e6efe6;
+  --highlight-bg-color: #eaf6ee;
+  --highlighter-rouge-color: #2f5f49;
+  --highlight-lineno-color: #9ab59a;
+  --inline-code-bg: rgb(25 25 28 / 5%);
+  --code-color: #2f3f2f;
+  --code-header-text-color: #8fa98f;
+  --code-header-muted-color: #e1eee1;
+  --code-header-icon-color: #c2d7c2;
+  --clipboard-checked-color: #43c743;
+
+  .dark {
+    display: none;
+  }
+}
+
+
