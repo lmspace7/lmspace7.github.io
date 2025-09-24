@@ -23,14 +23,14 @@ pin: false
 또한 플레이어 공격 애니메이션이 네트워크 상에서 동기화되도록 했다.
 
 **무기 시각화 자료**
-<img width="1164" height="327" alt="Image" src="https://github.com/user-attachments/assets/9111e781-5c36-4167-a42d-f35f992dc4d4" />
+<img width="1164" height="327" alt="피그마 무기 설계 자료화면" src="https://github.com/user-attachments/assets/9111e781-5c36-4167-a42d-f35f992dc4d4" />
 
 ## 설계/구현
 
 ### 1) 에디터: 무기 세트 자동 생성(Logic/Recorder/Sequence)
 
 `WeaponCreatorEditorWindow`에서 근접 무기 버튼을 누르면 Logic/Recorder/Sequence를 생성하고 서로 연결한다. 시퀀스 타입은 메타데이터로 지정된다.
-<img width="965" height="513" alt="Image" src="https://github.com/user-attachments/assets/82b5e3d0-7b12-4c06-9772-39499642f3f4" />
+<img width="965" height="513" alt="유니티 오딘 인스펙터 Custom Tool" src="https://github.com/user-attachments/assets/82b5e3d0-7b12-4c06-9772-39499642f3f4" />
 
 
 ### 2) 장착/교체: 서버 권한 + 옵저버 동기화

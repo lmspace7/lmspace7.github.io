@@ -9,7 +9,7 @@ pin: false
 
 ## 완성된 모습
 
-![Image](https://github.com/user-attachments/assets/0edc317b-db5a-4453-97d2-2468ae8570d8)
+<img width="447" height="431" alt="Unity VFX Grahp Collision Sample 사진" src="https://github.com/user-attachments/assets/c4d4b6e2-a7ee-4d19-a3d2-5641792e3909" />
 
 ## 눈 내리는 효과
 
@@ -26,9 +26,10 @@ pin: false
 
 그래서 VFX에서 충돌 관련 노드들을 살펴보았는데 두 가지가 있었다. Mesh / SDF
 
-<img src="https://github.com/user-attachments/assets/0b7d6bb7-2497-4073-84aa-a1ae3fb299a5" alt="Image1">
-<br>
-<img src="https://github.com/user-attachments/assets/b8d691f0-56d6-4468-9159-cd55934f6e59" alt="Image2">
+<p>
+  <img src="https://github.com/user-attachments/assets/0b7d6bb7-2497-4073-84aa-a1ae3fb299a5" alt="Unity VFX Sample Mesh 노드 할당" width="48%">
+  <img src="https://github.com/user-attachments/assets/b8d691f0-56d6-4468-9159-cd55934f6e59" alt="Unity VFX Sample SDF 노드 할당" width="48%">
+</p>
 
 Mesh는 이미 준비돼 있어서 큰 문제가 없었지만, SDF는 처음 들어본 용어라 먼저 개념부터 정리했다.
 자료를 조사해 보니 대부분 TextMeshPro와 관련된 SDF 자료가 주를 이루었다. 처음에는 VFX에서 쓰이는 SDF와 TextMeshPro의 SDF가 용어만 같고 전혀 다른 매커니즘인 줄 알았다. 조금 더 조사해 보니, 둘 다 같은 원리를 사용하며 2D로 표현되느냐 3D로 표현되느냐의 차이만 있을 뿐이었다.
@@ -88,9 +89,9 @@ distance = sdfTexture.Sample(particle_position)
 유니티에서는 SDF Baking 툴을 제공해서 딸깍만 8번 하면 3D 텍스처 SDF 파일을 얻을 수 있다.
 Window -> Visual Effects -> Utilities -> SDF Baking Tool을 통해서 에디터 윈도우를 열 수 있다.
 
-<img width="357" height="426" alt="Image" src="https://github.com/user-attachments/assets/425210d5-85a0-4acf-94a0-22d8526716c9" />
+<img width="357" height="426" alt="Unity SDF Bake Tool 사진" src="https://github.com/user-attachments/assets/425210d5-85a0-4acf-94a0-22d8526716c9" />
 <br>
-<img width="401" height="337" alt="Image" src="https://github.com/user-attachments/assets/406a93dd-e6a0-4a05-8d2d-946b07943412" />
+<img width="401" height="337" alt="Unity Collision Shape 노드 SDF 할당 사진" src="https://github.com/user-attachments/assets/406a93dd-e6a0-4a05-8d2d-946b07943412" />
 
 내가 만들고자 하는 충돌체의 Mesh를 인스펙터에 할당하고, Bake mesh 버튼과 Save SDF 버튼을 차례대로 누른 다음에 어디에 저장할 것인지 설정해 주면 된다. 그리고 이렇게 생성된 SDF 에셋을 VFX의 노드 부분에다가 할당만 해 주면 된다!
 
