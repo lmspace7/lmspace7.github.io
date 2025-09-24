@@ -74,6 +74,23 @@
   {% endunless %}
 
   <!-- Theme style -->
+  <!-- 페이지 첫 페인트 이전에 모드/변형을 즉시 적용하여 깜빡임 방지 -->
+  <script>
+    (function () {
+      try {
+        var m = localStorage.getItem('mode');
+        var v = localStorage.getItem('color-variant');
+        if (m === 'light' || m === 'dark') {
+          document.documentElement.setAttribute('data-mode', m);
+        }
+        if (v) {
+          document.documentElement.setAttribute('data-variant', v);
+        }
+      } catch (e) {
+        // 저장 접근 불가(시크릿/차단 등) 시 무시
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="{{ '/assets/css/:THEME.css' | replace: ':THEME', site.theme | relative_url }}">
 
   <!-- Web Font -->
