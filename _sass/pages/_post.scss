@@ -154,17 +154,18 @@ header {
     @include mx.ml-mr(-0.5rem);
   }
 
-  .btn {
+    .btn {
     @extend %-btn-post-nav;
 
-    &:not(:hover) {
-      color: var(--link-color);
-    }
+      background: var(--nav-btn-bg);
+      color: var(--nav-btn-text);
+      border-color: var(--nav-btn-border);
 
     &:hover {
-      &:not(.disabled)::before {
-        color: whitesmoke;
-      }
+        background: var(--nav-btn-hover-bg);
+        color: var(--nav-btn-hover-text);
+        border-color: var(--nav-btn-hover-border);
+        &:not(.disabled)::before { color: var(--nav-btn-hover-text); }
     }
 
     &.disabled {
