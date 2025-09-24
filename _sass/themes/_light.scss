@@ -61,6 +61,13 @@
   --card-hover-bg: #e2e2e2;
   --card-shadow: rgb(104 104 104 / 5%) 0 2px 6px 0,
     rgb(211 209 209 / 15%) 0 0 0 1px;
+  /* Post navigation buttons (Light default) */
+  --nav-btn-bg: var(--card-bg);
+  --nav-btn-text: var(--link-color);
+  --nav-btn-border: var(--btn-border-color);
+  --nav-btn-hover-bg: var(--card-hover-bg);
+  --nav-btn-hover-text: white;
+  --nav-btn-hover-border: var(--link-color);
   --footnote-target-bg: lightcyan;
   --tb-odd-bg: #fbfcfd;
   --tb-border-color: #eaeaea;

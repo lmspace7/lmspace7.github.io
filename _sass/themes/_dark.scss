@@ -69,6 +69,13 @@
   --card-hover-bg: #464d51;
   --card-shadow: rgb(21 21 21 / 72%) 0 6px 18px 0,
     rgb(137 135 135 / 24%) 0 0 0 1px;
+  /* Post navigation buttons (Dark) */
+  --nav-btn-bg: var(--card-bg);
+  --nav-btn-text: var(--link-color);
+  --nav-btn-border: var(--btn-border-color);
+  --nav-btn-hover-bg: var(--card-hover-bg);
+  --nav-btn-hover-text: whitesmoke;
+  --nav-btn-hover-border: var(--link-color);
   --kbd-wrap-color: #6a6a6a;
   --kbd-text-color: #d3d3d3;
   --kbd-bg-color: #242424;
