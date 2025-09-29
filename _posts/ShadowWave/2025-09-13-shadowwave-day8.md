@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 8일차
+title: "개발일지 #09 - HitReactionHandler 도입·넉백/경직 개선"
 description: HitReactionHandler 도입, 넉백/경직 표현, FSM 연동 개선
 date: 2025-09-13 22:30:00 +0900
 categories: [개발일지, 게임개발]

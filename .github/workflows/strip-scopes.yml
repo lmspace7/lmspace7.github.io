@@ -1,0 +1,39 @@
+name: Strip editorial scopes from posts
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "lmspace7.github.io/_posts/**.md"
+
+jobs:
+  strip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run strip script
+        run: |
+          node tools/strip_scopes.js
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: strip editorial scopes from posts"
+            git push
+          fi
+
+

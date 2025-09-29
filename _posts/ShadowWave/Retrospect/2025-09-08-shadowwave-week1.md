@@ -1,5 +1,5 @@
 ---
-title: ShadowWave Week 1 회고
+title: "개발일지 #06 - 마일스톤 회고: FSM/AI·무기 파이프라인 총정리"
 description: FishNet 학습부터 FSM/AI, 무기 파이프라인까지 — 1주차 총정리
 date: 2025-09-08 21:31:00 +0900
 categories: [개발일지, 게임개발]

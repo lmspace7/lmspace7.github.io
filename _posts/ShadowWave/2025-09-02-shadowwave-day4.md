@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 4일차
+title: "개발일지 #04 - 적 FSM/AI, 서버 권한, 스포너/컨텍스트"
 description: 적 FSM/AI 구축, 서버 권한 전환, 스포너, 컨텍스트 도입
 date: 2025-09-02 12:41:00 +0900
 categories: [개발일지, 게임개발]

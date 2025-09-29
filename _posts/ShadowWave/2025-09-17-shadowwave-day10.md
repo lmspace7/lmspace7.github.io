@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 10일차
+title: "개발일지 #11 - HitStop 설계·리액션 하이브리드(Heavy->Stagger)"
 description: 멀티플레이 친화 HitStop 설계와 가이드(전역 TimeScale 미사용)
 date: 2025-09-17 22:30:00 +0900
 categories: [개발일지, 게임개발]

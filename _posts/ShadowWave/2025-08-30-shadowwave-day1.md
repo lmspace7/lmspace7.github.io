@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 1일차
+title: "개발일지 #01 - FishNet 튜토리얼 학습"
 description: FishNet 공식문서의 튜토리얼 학습
 date: 2025-08-30 23:30:00 +0900
 categories: [개발일지, 게임개발]

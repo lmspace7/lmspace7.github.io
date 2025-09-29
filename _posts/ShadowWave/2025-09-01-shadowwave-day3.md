@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 3일차
+title: "개발일지 #03 - 플레이어 FSM/이동·회피·공격 동기화"
 description: 플레이어 FSM 구축, 이동/회피/공격 구현 및 상태 동기화 검증
 date: 2025-09-01 10:29:00 +0900
 categories: [개발일지, 게임개발]
