@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 2일차
+title: "개발일지 #02 - SyncEnum 제네릭 상태 동기화 구현"
 description: FishNet 커스텀 제네릭 상태 동기화(SyncEnum) 구현
 date: 2025-08-31 12:01:00 +0900
 categories: [개발일지, 게임개발]
@@ -24,7 +24,7 @@ pin: false
 - **서버 권한 모델**: 값 변경은 서버에서만 허용. 비서버에서 시도 시 경고 후 중단.
 - **직렬화 전략**: 열거형을 `int`로 직렬화(`WriteInt32`/`ReadInt32`).
 - **동기화 흐름**:
-  - 변경 시 `Dirty()` → 틱에 `WriteDelta`로 전송
+  - 변경 시 `Dirty()` -> 틱에 `WriteDelta`로 전송
   - 초기 동기화 시 `WriteFull` 전송(변경 이력이 있을 때)
   - 수신 측은 `Read`에서 `canModifyValues`와 `newChangeId`로 적용/이벤트 제어
 

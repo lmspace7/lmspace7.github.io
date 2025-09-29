@@ -1,5 +1,5 @@
 ---
-title: ShadowWave 개발일지 6일차
+title: "개발일지 #07 - 장착/교체 RPC·근접 콤보·네트워크 애니 동기화"
 description: 무기 생성기 통합, 장착/교체 RPC, 근접 콤보 액션, 네트워크 애니메이션 동기화
 date: 2025-09-11 17:50:00 +0900
 categories: [개발일지, 게임개발]
@@ -57,7 +57,7 @@ private void RPC_Equip(WeaponObject weaponObject)
 [https://www.youtube.com/watch?v=egnQTod1Vyk](https://www.youtube.com/watch?v=egnQTod1Vyk)
 이 영상의 도움을 많이 받았다.
 
-`SO_WeaponSequence`의 `AttackStep`으로 시간 구간을 정의한다. `MeleeComboAction`은 입력 버퍼와 시간을 평가해 다음 스텝을 큐잉하고, `NetworkAnimator` 트리거/정수 파라미터로 콤보를 동기화한다.
+`SO_WeaponSequence`의 `AttackStep`으로 시간 구간을 정의한다. `MeleeComboAction`은 입력 버퍼와 시간을 평가해 다음 단계로 예약하고, `NetworkAnimator` 트리거/정수 파라미터로 콤보를 동기화한다.
 
 ```csharp
 if (_queuedNextCombo == true && _queuedAppliedInState == false && elapsedTime >= step.ComboTimingEnd)
@@ -96,7 +96,7 @@ _context.FSM.SetState(E_PlayerState.Idle);
 ## 네트워크/애니메이션 동기화
 - Host/Client 환경에서 장착/교체가 서버 권한으로 일관되게 반영됨을 확인
 - 공격 트리거와 `ComboCount` 정수 파라미터가 관측자에게 동일하게 복제됨을 확인
-- 콤보 시간 구간 종료 시점의 파라미터 적용이 프레임 경합 없이 안정적으로 동작
+- 콤보 시간 구간 종료 시점의 파라미터 적용이 프레임 충돌 없이 안정적으로 동작
 
 ## 메모
 - 장착/교체: 반경 탐색 -> 장착 요청(ServerRpc) -> 적용(서버) -> 동기화(ObserversRpc) 정상 동작
