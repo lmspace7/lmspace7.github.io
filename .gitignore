@@ -22,6 +22,32 @@ package-lock.json
 !.vscode/extensions.json
 !.vscode/tasks.json
 
-#
+# 로컬 작업 폴더
 _batchFile/
 _posts/_temp/
+
+# OS 생성 파일
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 임시 파일
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Ruby 버전 관리
+.ruby-version
+.ruby-gemset
+
+# 로컬 환경 설정
+.env
+.env.local
+.env.*.local

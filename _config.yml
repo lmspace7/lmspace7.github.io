@@ -162,6 +162,9 @@ collections:
   tabs:
     output: true
     sort_by: order
+  policies:
+    output: true
+    permalink: /:collection/:name/
 
 defaults:
   - scope:
